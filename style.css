@@ -1,9 +1,44 @@
+/* Base Styles */
 body {
-    background-color: aquamarine;
-
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
-button {
-    background-color: rgb(51, 214, 51);
+.header {
+    background-color: #4CAF50;
     color: white;
+    text-align: center;
+    padding: 1em 0;
+}
+
+.input, .display {
+    margin: 20px;
+    text-align: center;
+}
+
+.input select, .input input, .input button {
+    margin: 10px 0;
+    padding: 10px;
+    width: 80%;
+    max-width: 300px; /* Limit maximum width */
+}
+
+/* Responsive Styles */
+@media screen and (min-width: 600px) {
+    .input select, .input input, .input button {
+        width: 40%;
+    }
+
+    .alarm {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .alarm button {
+        margin: 0 10px;
+    }
 }
