@@ -37,9 +37,13 @@ function displayAlarms() {
 // Set an alarm
 $setAlarmButton.click(function() {
     const city = $timezoneSelect.val();
-    const time = $alarmTimeInput.val();             // capturing the time of input, not the current time
-    alarms.push({ timezone: city, time: time });
-    displayAlarms();
+    const selectedTime = $alarmTimeInput.val(); // Get the user selected time
+    if (selectedTime) {
+        alarms.push({ timezone: city, time: selectedTime });
+        displayAlarms();
+    } else {
+        alert("Please select a time for the alarm.");
+    }
 });
 
 // Fetch city time using API
@@ -101,7 +105,7 @@ function checkAlarms() {
 }
 
 function triggerAlarm(alarm, index) {
-    alert(`Alarm for ${alarm.timezone} at ${alarm.time}!`);
+    alert(`⏰ Alarm for ${alarm.timezone} at ${alarm.time}! ⏰`);
     alarms.splice(index, 1); // Remove the triggered alarm
     displayAlarms();
 }
