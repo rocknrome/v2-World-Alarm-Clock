@@ -37,7 +37,9 @@ function displayAlarms() {
 // Set an alarm
 $setAlarmButton.click(function() {
     const city = $timezoneSelect.val();
-    fetchCityTime(city);
+    const time = $alarmTimeInput.val();             // capturing the time of input, not the current time
+    alarms.push({ timezone: city, time: time });
+    displayAlarms();
 });
 
 // Fetch city time using API
@@ -74,6 +76,38 @@ window.deleteAlarm = function(index) {
     displayAlarms();
 };
 
-// Alarm triggering functionality to be implemented
+// Alarm triggering functionality
+function checkAlarms() {
+    alarms.forEach((alarm, index) => {
+        $.ajax({
+            method: 'GET',
+            url: 'https://api.api-ninjas.com/v1/worldtime?city=' + alarm.timezone,
+            headers: { 'X-Api-Key': apiKey },
+            contentType: 'application/json',
+            success: function(result) {
+                console.log(`Remote local time is: `, result.datetime);
+                const cityTime = moment(result.datetime); // Assuming the API returns the current datetime of the city
+                const alarmTime = moment(alarm.time, 'HH:mm');
+
+                if (cityTime.hour() === alarmTime.hour() && cityTime.minute() === alarmTime.minute()) {
+                    triggerAlarm(alarm, index);
+                }
+            },
+            error: function ajaxError(jqXHR) {
+                console.error('Error fetching time for city:', jqXHR.responseText);
+            }
+        });
+    });
+}
+
+function triggerAlarm(alarm, index) {
+    alert(`Alarm for ${alarm.timezone} at ${alarm.time}!`);
+    alarms.splice(index, 1); // Remove the triggered alarm
+    displayAlarms();
+}
+
+// Periodically check alarms every minute
+setInterval(checkAlarms, 60000);
+
 
 
