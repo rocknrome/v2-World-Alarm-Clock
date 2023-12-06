@@ -20,14 +20,14 @@ function populateCityDropdown() {
 }
 populateCityDropdown();
 
-// Function to display alarms
+// Function to display alarms in 12-hour format
 function displayAlarms() {
     $alarmDisplay.empty();
     alarms.forEach((alarm, index) => {
+        const formattedTime = moment(alarm.time, 'HH:mm').format('hh:mm A');    // Converting to 12-hour format
         $alarmDisplay.append(`
             <div class="alarm">
-                Alarm at ${alarm.time} in ${alarm.timezone}
-                <button onclick="editAlarm(${index})">Edit</button>
+                Alarm at ${formattedTime} in ${alarm.timezone}
                 <button onclick="deleteAlarm(${index})">Delete</button>
             </div>
         `);
@@ -37,7 +37,7 @@ function displayAlarms() {
 // Set an alarm
 $setAlarmButton.click(function() {
     const city = $timezoneSelect.val();
-    const selectedTime = $alarmTimeInput.val(); // Get the user selected time
+    const selectedTime = $alarmTimeInput.val();     // Get the user-selected time
     if (selectedTime) {
         alarms.push({ timezone: city, time: selectedTime });
         displayAlarms();
@@ -45,34 +45,6 @@ $setAlarmButton.click(function() {
         alert("Please select a time for the alarm.");
     }
 });
-
-// Fetch city time using API
-function fetchCityTime(city) {
-    $.ajax({
-        method: 'GET',
-        url: 'https://api.api-ninjas.com/v1/worldtime?city=' + city,
-        headers: { 'X-Api-Key': apiKey },
-        contentType: 'application/json',
-        success: function(result) {
-            console.log(result)             //console logging the json as a confirmation
-            const time = result.datetime;   // Assuming the API returns a datetime object
-            alarms.push({ timezone: city, time: time });
-            displayAlarms();
-        },
-        error: function ajaxError(jqXHR) {
-            console.error('Error fetching time for city:', jqXHR.responseText);
-        }
-    });
-}
-
-// Edit an alarm
-window.editAlarm = function(index) {
-    const newTime = prompt("Enter new time (HH:MM format):", alarms[index].time);
-    if(newTime) {
-        alarms[index].time = newTime;
-        displayAlarms();
-    }
-};
 
 // Delete an alarm
 window.deleteAlarm = function(index) {
@@ -93,8 +65,8 @@ function checkAlarms() {
                 const cityTime = moment(result.datetime); // Assuming the API returns the current datetime of the city
                 const alarmTime = moment(alarm.time, 'HH:mm');
 
-                if (cityTime.hour() === alarmTime.hour() && cityTime.minute() === alarmTime.minute()) {
-                    triggerAlarm(alarm, index);
+                if (cityTime.format('hh:mm A') === alarmTime.format('hh:mm A')) {
+                    triggerAlarm(alarm, index); // Comparing the remote time with alarm time
                 }
             },
             error: function ajaxError(jqXHR) {
@@ -105,13 +77,11 @@ function checkAlarms() {
 }
 
 function triggerAlarm(alarm, index) {
-    alert(`⏰ Alarm for ${alarm.timezone} at ${alarm.time}! ⏰`);
+    const formattedTime = moment(alarm.time, 'HH:mm').format('hh:mm A'); // Convert to 12-hour format for alert
+    alert(`⏰ Alarm for ${alarm.timezone} at ${formattedTime}! ⏰`);
     alarms.splice(index, 1); // Remove the triggered alarm
     displayAlarms();
 }
 
 // Periodically check alarms every minute
 setInterval(checkAlarms, 60000);
-
-
-
