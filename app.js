@@ -1,9 +1,12 @@
+// R'N'R   December 5, 2023
+
 // Declaring variables
 const $timezoneSelect = $('#timezone-select');
 const $alarmTimeInput = $('#alarm-time');
 const $setAlarmButton = $('#set-alarm');
 const $alarmDisplay = $('#alarm-display');
 let alarms = [];
+const apiKey = 'i+sHjbBAVa3M0EDYqAYU2Q==dKhqIAd4jknJOPg1';
 
 // List of cities for the timezone dropdown
 const cities = ['London', 'Moscow', 'New York', 'Paris', 'Sydney', 'Tokyo'];
@@ -34,12 +37,27 @@ function displayAlarms() {
 // Set an alarm
 $setAlarmButton.click(function() {
     const city = $timezoneSelect.val();
-    const time = $alarmTimeInput.val();
-    // Here you can make an API call to fetch timezone data for the selected city
-    // For simplicity, using the city name as the timezone
-    alarms.push({ timezone: city, time: time });
-    displayAlarms();
+    fetchCityTime(city);
 });
+
+// Fetch city time using API
+function fetchCityTime(city) {
+    $.ajax({
+        method: 'GET',
+        url: 'https://api.api-ninjas.com/v1/worldtime?city=' + city,
+        headers: { 'X-Api-Key': apiKey },
+        contentType: 'application/json',
+        success: function(result) {
+            console.log(result)             //console logging the json as a confirmation
+            const time = result.datetime;   // Assuming the API returns a datetime object
+            alarms.push({ timezone: city, time: time });
+            displayAlarms();
+        },
+        error: function ajaxError(jqXHR) {
+            console.error('Error fetching time for city:', jqXHR.responseText);
+        }
+    });
+}
 
 // Edit an alarm
 window.editAlarm = function(index) {
@@ -57,3 +75,5 @@ window.deleteAlarm = function(index) {
 };
 
 // Alarm triggering functionality to be implemented
+
+
