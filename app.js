@@ -61,11 +61,12 @@ function checkAlarms() {
             headers: { 'X-Api-Key': apiKey },
             contentType: 'application/json',
             success: function(result) {
-                console.log(`Remote local time is: `, result.datetime);
+                const cityTimeFormatted = moment(result.datetime).format('HH:mm A'); // Formatting to 'HH:mm'
+                console.log(`Local time in ${alarm.timezone} is: `, cityTimeFormatted);
                 const cityTime = moment(result.datetime); // Assuming the API returns the current datetime of the city
                 const alarmTime = moment(alarm.time, 'HH:mm');
 
-                if (cityTime.format('hh:mm A') === alarmTime.format('hh:mm A')) {
+                if (cityTime.format('HH:mm') === alarmTime.format('HH:mm')) {
                     triggerAlarm(alarm, index); // Comparing the remote time with alarm time
                 }
             },
@@ -75,6 +76,7 @@ function checkAlarms() {
         });
     });
 }
+
 
 function triggerAlarm(alarm, index) {
     const formattedTime = moment(alarm.time, 'HH:mm').format('hh:mm A'); // Convert to 12-hour format for alert
