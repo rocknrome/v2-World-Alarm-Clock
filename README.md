@@ -28,3 +28,11 @@ Wireframe sketch:
 
 Deployment link: [[https://rocknrome.github.io/World-clock-alarm/](https://v2-world-alarm-clock.vercel.app/)https://v2-world-alarm-clock.vercel.app/](https://v2-world-alarm-clock.vercel.app/)
 or https://rocknrome.github.io/v2-World-Alarm-Clock/
+
+
+**Next steps for future implementation: **
+1. Error handling while calling API to be visual on the webpage, not only in console.
+2. Editing timezone and time for an alarm.
+3. Alarm triggering with audio file.
+4. Input window for user to type in a desired city name.
+5. Saving alarm after browser refresh.
