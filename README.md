@@ -18,13 +18,11 @@ The technologies used are HTML, CSS, JavaScript, jQuery, REST API
 API used: [https://timeapi.io/swagger/index.html](https://api.api-ninjas.com/v1/worldtime?city=Moscow)
 
 
-Wireframe sketch: 
+Wireframe sketch: ![111](https://github.com/rocknrome/v2-World-Alarm-Clock/assets/126816805/dda39579-4025-454c-aa9c-ffa445d58044)
 
 
 
 
-
-![Proposed wireframe](https://github.com/rocknrome/World-clock-alarm/assets/126816805/0bd6143c-9cb8-4487-8dab-0f5b149e71c3)
 
 Deployment link: [https://rocknrome.github.io/World-clock-alarm/](https://v2-world-alarm-clock.vercel.app/)https://v2-world-alarm-clock.vercel.app/](https://v2-world-alarm-clock.vercel.app/
 or 
